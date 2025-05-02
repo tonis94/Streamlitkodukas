@@ -2,6 +2,7 @@ streamlit
 geopandas
 matplotlib
 pandas
-requests
-io
-json
+numpy
+shapely
+fiona
+pyproj
