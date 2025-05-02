@@ -68,8 +68,6 @@ def get_color_scale_limits(full_df):
     full_df['Loomulik iive'] = full_df['Mehed Loomulik iive'] + full_df['Naised Loomulik iive']
     return full_df['Loomulik iive'].min(), full_df['Loomulik iive'].max()
 
-vmin, vmax = get_color_scale_limits(df)
-
 
 def plot_map(df_merged, year):
     fig, ax = plt.subplots(1, 1, figsize=(12, 8))
@@ -101,6 +99,7 @@ selected_year = st.sidebar.selectbox("Vali aasta", list(map(str, range(2014, 202
 # Load data
 df = import_data()
 geo_df = import_geojson()
+vmin, vmax = get_color_scale_limits(df)
 
 if not df.empty:
     # Filter by selected year
