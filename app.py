@@ -62,16 +62,30 @@ def import_data():
 def import_geojson():
     return gpd.read_file(GEOJSON_FILE)
 
+# Calculate min/max for color scale once from full dataset
+@st.cache_data
+def get_color_scale_limits(full_df):
+    full_df['Loomulik iive'] = full_df['Mehed Loomulik iive'] + full_df['Naised Loomulik iive']
+    return full_df['Loomulik iive'].min(), full_df['Loomulik iive'].max()
+
+vmin, vmax = get_color_scale_limits(df)
+
+
 def plot_map(df_merged, year):
     fig, ax = plt.subplots(1, 1, figsize=(12, 8))
-    df_merged.plot(column='Loomulik iive', 
-                   ax=ax,
-                   legend=True,
-                   cmap='viridis',
-                   legend_kwds={'label': "Loomulik iive"})
+    df_merged.plot(
+        column='Loomulik iive', 
+        ax=ax,
+        legend=True,
+        cmap='viridis',
+        vmin=vmin,
+        vmax=vmax,
+        legend_kwds={'label': "Loomulik iive", 'shrink': 0.6}
+    )
     plt.title(f'Loomulik iive maakonniti aastal {year}')
     plt.axis('off')
     st.pyplot(fig)
+
 
 # ---------------------------
 # STREAMLIT APP
